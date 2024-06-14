@@ -115,4 +115,34 @@ class FileTest extends TestCase
 
         $response->assertStatus(204);
     }
+
+    public function testUpdateFile()
+    {
+        $file = $this->postJson('/api/fms/v1/files/store', [
+            'name' => 'test.txt',
+            'file' => UploadedFile::fake()->create('test.txt', 100),
+            'license_id' => 1,
+            'user_id' => 1,
+        ]);
+        $response = $this->postJson('/api/fms/v1/files/update/' . $file->json('uuid'), [
+            'name' => 'test2.txt',
+            'file' => UploadedFile::fake()->create('test2.txt', 100),
+            'license_id' => 1,
+            'user_id' => 1,
+        ]);
+
+        $response->assertStatus(201);
+
+        $response->assertJsonStructure([
+            'uuid',
+            'name',
+            'path',
+            'mime_type',
+            'size',
+            'user_id',
+            'license_id',
+            'created_at',
+            'updated_at',
+        ]);
+    }
 }

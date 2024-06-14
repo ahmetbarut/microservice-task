@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class FileController extends Controller
 {
@@ -43,6 +44,15 @@ class FileController extends Controller
         $file->user_id = $request->user_id;
         $file->license_id = $request->license_id;
         $file->save();
+
+        $this->sendNotification(json_encode([
+            'notification_type' => 'file_uploaded',
+            'data' => [
+                'title' => 'File Uploaded',
+                'message' => 'File has been uploaded',
+                'user_id' => $request->user_id,
+            ]
+        ]));
 
         return response()->json($file, 201);
     }
@@ -78,6 +88,15 @@ class FileController extends Controller
         $file->license_id = $request->license_id;
         $file->save();
 
+        $this->sendNotification(json_encode([
+            'notification_type' => 'file_created',
+            'data' => [
+                'title' => 'File Created',
+                'message' => 'File has been created',
+                'user_id' => $request->user_id,
+            ]
+        ]));
+
         return response()->json($file, 201);
     }
 
@@ -102,6 +121,15 @@ class FileController extends Controller
         FacadesFile::delete(storage_path($file->path));
 
         $file->delete();
+
+        $this->sendNotification(json_encode([
+            'notification_type' => 'file_deleted',
+            'data' => [
+                'title' => 'File Deleted',
+                'message' => 'File has been deleted',
+                'user_id' => $request->user_id,
+            ]
+        ]));
 
         return response()->json(null, 204);
     }
@@ -138,6 +166,28 @@ class FileController extends Controller
         $file->license_id = $request->license_id;
         $file->save();
 
+        $this->sendNotification(json_encode([
+            'notification_type' => 'file_updated',
+            'data' => [
+                'title' => 'File Updated',
+                'message' => 'File has been updated',
+                'user_id' => $request->user_id,
+            ]
+        ]));
+
         return response()->json($file, 201);
+    }
+
+    protected function sendNotification(string $msg)
+    {
+        $connection = app('rabbitmq');
+        $channel = $connection->channel();
+        $channel->queue_declare('notification', false, true, false, false);
+
+        $msg = new AMQPMessage($msg);
+        $channel->basic_publish($msg, '', 'notification');
+
+        $channel->close();
+        $connection->close();
     }
 }

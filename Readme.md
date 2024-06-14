@@ -32,6 +32,8 @@ license servisi, kullanıcının lisansıyla ilgilenir, lisansın süresi dolars
 - [x] Lisans günlük gönderilecek dosya sayısını tutar (default 5)
 - [x] Lisans kota bilgisi tutar
 
+- Cron ile lisans kontrolü yapılıp, süresi dolmuşsa bildirim atıyor.
+
 ### file-management
 file-management servisi, kullanıcıların dosyalarıyla ilgilenir. file-management servisi, `license` servisini de kullanır. Bunu kullanmasının sebebi; kullanıcının kısıtlamalarına göre hareket etmesini sağlamaktır.
 
@@ -48,5 +50,22 @@ file-management servisi, kullanıcıların dosyalarıyla ilgilenir. file-managem
 notification servisi, kullanıcının bildirimleriyle ilgilenir. Diğer servislerden yapılan bildirimleri, kullanıcıya bildirmek üzere toplar.
 
 - [ ] Gönderilen notificationlar görüntülenebilmelidir (Horizon)
+    - Bu kısım ile ilgili redis sorunları yaşadım ve atladım, onun haricindeki maddeler tamamlandı.
 - [x] Bu serviste bir endpoint yoktur
 - [x] Haberleşme rabbitmq üzerinden yapılmalıdır
+
+----
+
+# Bazı Açıklamalar 
+- file-management, license, notification ve security servislerinde, her serviste `docker/supervisord.conf` dosyası var ve bu dosya ile servislerin ihtiyaç duyduğu bazı işlevleri yerine getirmesini sağlar.
+
+- Notification servisi haricinde, tüm servislerde `Feature Test` yazıldı.
+
+- Bütn servisleri tek repoda toplamak zorunda kaldım, umarım eksi olmaz. :smile
+
+## Kurulum
+
+```shell
+git clone https://github.com/ahmetbarut/microservice-task.git
+docker-compose up # veya docker-compose up -d 
+```
