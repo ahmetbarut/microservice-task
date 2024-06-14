@@ -39,7 +39,7 @@ license servisi, kullanıcının lisansıyla ilgilenir, lisansın süresi dolars
 file-management servisi, kullanıcıların dosyalarıyla ilgilenir. file-management servisi, `license` servisini de kullanır. Bunu kullanmasının sebebi; kullanıcının kısıtlamalarına göre hareket etmesini sağlamaktır.
 
 - [x] Dosya oluşturma ve transferinden sorumludur.
-- [x] Dosya S3, Minio gibi bir ortamda tutulabilir. Ancak Storage altında da olabilir. (Optional)
+- [ ] Dosya S3, Minio gibi bir ortamda tutulabilir. Ancak Storage altında da olabilir. (Optional) // Storage
 - [x] File Create ederken upload yapılabilir.
 - [x] File Download edilmelidir.
 - [x] File Create Yada Upload aşamasında lisans kontrolü yapılmalıdır.
