@@ -72,4 +72,25 @@ class UserTest extends TestCase
         $response
             ->assertStatus(204);
     }
+
+    public function testUpdateUser(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->putJson('api/security/v1/users/' . $user->id, [
+            'name' => 'Jane Doe',
+            
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+                'updated_at',
+            ]);
+    }
 }
