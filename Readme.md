@@ -62,8 +62,6 @@ notification servisi, kullanıcının bildirimleriyle ilgilenir. Diğer servisle
 
 - Notification servisi haricinde, tüm servislerde `Feature Test` yazıldı.
 
-- Bütn servisleri tek repoda toplamak zorunda kaldım, umarım eksi olmaz. :smile 
-
 ## Kurulum
 
 ```shell
