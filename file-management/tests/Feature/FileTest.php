@@ -9,6 +9,13 @@ use Tests\TestCase;
 
 class FileTest extends TestCase
 {
+    public function testGetFiles()
+    {
+        $response = $this->get('/api/fms/v1/files');
+
+        $response->assertStatus(200);
+    }
+
     public function testCreateFile()
     {
         $response = $this->postJson('/api/fms/v1/files/create', [

@@ -13,6 +13,24 @@ use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
+    public function index(Request $request)
+    {
+        $response = Http::acceptJson()
+            ->withToken($request->bearerToken())
+            ->get('http://security_service:8000/api/security/v1/users');
+
+        if ($response->clientError()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+                'errors' => $response->json()
+            ], $response->status());
+        }
+
+        return response()->json(
+            $response->json()
+        );
+    }
+
     public function storeFile(FileStoreRequest $request)
     {
         $requestFile = $request->file('file');
@@ -95,8 +113,8 @@ class FileController extends Controller
         ]);
 
         $license = Http::acceptJson()->get('http://license_service:8000/api/v1/license', [
-                'user_id' => $request->user_id,
-            ])->object();
+            'user_id' => $request->user_id,
+        ])->object();
 
         $size = File::where('user_id', $request->user_id)->sum('size');
 
@@ -105,5 +123,21 @@ class FileController extends Controller
             'used' => $size,
             'available' => $license->data->quota - $size,
         ]);
+    }
+
+    public function updateFile(FileStoreRequest $request)
+    {
+        $requestFile = $request->file('file');
+
+        $file = new File();
+        $file->name = $request->name;
+        $file->path = $requestFile->store('files');
+        $file->mime_type = $requestFile->getMimeType();
+        $file->size = $requestFile->getSize();
+        $file->user_id = $request->user_id;
+        $file->license_id = $request->license_id;
+        $file->save();
+
+        return response()->json($file, 201);
     }
 }

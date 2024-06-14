@@ -38,5 +38,6 @@ Route::middleware(CheckTokenMiddleware::class)
             Route::get('download/{file}', [FileManagementController::class, 'downloadFile']);
             Route::delete('delete/{file}', [FileManagementController::class, 'deleteFile']);
             Route::get('quota', [FileManagementController::class, 'quota']);
+            Route::post('update/{file}', [FileManagementController::class, 'updateFile']);
         });
     });

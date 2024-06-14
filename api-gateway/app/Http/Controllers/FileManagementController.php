@@ -51,6 +51,14 @@ class FileManagementController extends Controller
         return response()->json($response->json(), $response->status());
     }
 
+    public function updateFile(Request $request, $file)
+    {
+        $response = Http::acceptJson()
+            ->post("http://file_management_service:8000/api/fms/v1/files/update/{$file}", $request->all());
+
+        return response()->json($response->json(), $response->status());
+    }
+
     public function deleteFile(Request $request, $file)
     {
         $response = Http::acceptJson()
