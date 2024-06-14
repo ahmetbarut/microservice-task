@@ -62,4 +62,40 @@ class SecurityController extends Controller
             'data' => $response->json()
         ]);
     }
+
+    public function destroy($id)
+    {
+        $response = Http::acceptJson()
+            ->withToken(request()->bearerToken())
+            ->delete("http://security_service:8000/api/security/v1/users/{$id}");
+
+        if ($response->clientError()) {
+            return response()->json([
+                'message' => 'Unauthorized',
+                'errors' => $response->json()
+            ], $response->status());
+        }
+
+        return response()->json([], $response->status());
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->all();
+
+        $response = Http::acceptJson()
+            ->withToken(request()->bearerToken())
+            ->put("http://security_service:8000/api/security/v1/users/{$id}", $data);
+
+        if ($response->clientError()) {
+            return response()->json([
+                'message' => 'Invalid data',
+                'errors' => $response->json()
+            ], $response->status());
+        }
+
+        return response()->json([
+            'data' => $response->json()
+        ]);
+    }
 }

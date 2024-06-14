@@ -62,4 +62,14 @@ class UserTest extends TestCase
                 ]
             ]);
     }
+
+    public function testDeleteUser(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->deleteJson('api/security/v1/users/' . $user->id);
+
+        $response
+            ->assertStatus(204);
+    }
 }

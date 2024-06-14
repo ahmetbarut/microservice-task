@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('security/v1')->group(function () {
     Route::prefix('users')
         ->group(function () {
-            Route::get('/', [SecurityController::class, 'index']);
             Route::post('/', [SecurityController::class, 'store']);
             Route::post('/login', [SecurityController::class, 'login']);
         });
@@ -19,6 +18,12 @@ Route::prefix('security/v1')->group(function () {
 
 Route::middleware(CheckTokenMiddleware::class)
     ->group(function () {
+        Route::prefix('security/v1')
+            ->group(function () {
+                Route::get('/users', [SecurityController::class, 'index']);
+                Route::put('/users/{user}', [SecurityController::class, 'update']);
+                Route::delete('/users/{user}', [SecurityController::class, 'destroy']);
+            });
         Route::prefix('license/v1')
             ->group(function () {
                 Route::get('/me', [LicenseController::class, 'index']);

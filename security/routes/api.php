@@ -12,5 +12,7 @@ Route::prefix('security/v1')->group(function () {
 
     Route::middleware('auth:api')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
+        Route::put('/users/{user}', [UserController::class, 'update']);
     });
 });

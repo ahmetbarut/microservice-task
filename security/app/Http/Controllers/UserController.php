@@ -76,4 +76,27 @@ class UserController extends Controller
             'access_token' => $user->createToken('authToken')->accessToken,
         ]);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8',
+        ]);
+
+        $user->update($validated);
+
+        return response()->json($user);
+    }
 }
