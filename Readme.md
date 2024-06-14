@@ -13,6 +13,7 @@ Proje içinde 5 adet servis bulunmaktadır, çoğu `HTTP` ile haberleşiyorken, 
 ## Servislerin Tanımı
 ### api-gateway
 api-gateway servisi, diğer servislere gitmek isteyen kullanıcıları yönlendirir ve burdan oturumlarını kontrol eder. Oturumu geçerli olan kullanıcı, diğer servislere erişebilir hale geliyor. Normal şartlarda dışarıya açık olması gereken tek servistir.
+Diğer servislere, parametre olarak `user_id` iletir. 
 
 ### security
 security servisi, kullanıcı yönetimiyle ilgilenir ve kullanıcının oturumunu doğrular. Kullanıcının diğer servisleri kullanabilmesi için bu servisi kullanmalıdır.
@@ -61,7 +62,7 @@ notification servisi, kullanıcının bildirimleriyle ilgilenir. Diğer servisle
 
 - Notification servisi haricinde, tüm servislerde `Feature Test` yazıldı.
 
-- Bütn servisleri tek repoda toplamak zorunda kaldım, umarım eksi olmaz. :smile
+- Bütn servisleri tek repoda toplamak zorunda kaldım, umarım eksi olmaz. :smile 
 
 ## Kurulum
 
