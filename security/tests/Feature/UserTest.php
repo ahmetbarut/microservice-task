@@ -39,11 +39,11 @@ class UserTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                    'access_token',
+                'access_token',
             ]);
     }
 
-    public function testGetUser(): void
+    public function testGetUsers(): void
     {
         $user = User::factory()->create();
 
@@ -52,12 +52,14 @@ class UserTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'id',
-                'name',
-                'email',
-                'email_verified_at',
-                'created_at',
-                'updated_at',
+                '*' => [
+                    'id',
+                    'name',
+                    'email',
+                    'email_verified_at',
+                    'created_at',
+                    'updated_at',
+                ]
             ]);
     }
 }
